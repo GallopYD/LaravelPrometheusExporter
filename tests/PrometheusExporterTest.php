@@ -2,7 +2,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestResponse;
-use Triadev\PrometheusExporter\Contract\PrometheusExporterContract;
+use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
 
 class PrometheusExporterTest extends TestCase
 {

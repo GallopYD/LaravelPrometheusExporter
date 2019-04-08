@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\PrometheusExporter;
+namespace GallopYD\PrometheusExporter;
 
 use Prometheus\PushGateway;
-use Triadev\PrometheusExporter\Contract\PrometheusExporterContract;
+use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
 use Prometheus\CollectorRegistry;
 use Prometheus\MetricFamilySamples;
 use Prometheus\Exception\MetricNotFoundException;

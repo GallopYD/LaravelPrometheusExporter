@@ -1,7 +1,7 @@
 <?php
 namespace Tests;
 
-use Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
+use GallopYD\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {

@@ -1,5 +1,5 @@
 {
-    "name": "triadev/laravel-prometheus-exporter",
+    "name": "gallop-yd/laravel-prometheus-exporter",
     "description": "A laravel service provider to export metrics.",
     "keywords": [
         "Laravel",
@@ -9,14 +9,14 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Christopher Lorke",
-            "email": "christopher.lorke@gmx.de"
+            "name": "GallopYD",
+            "email": "zhangyida07@gmail.com"
         }
     ],
     "require": {
         "php": ">=7.1",
-        "illuminate/support": "^5.5",
-        "jimdo/prometheus_client_php": "^0.9.1"
+        "gallop-yd/prometheus_client_php": "^0.9.1",
+        "illuminate/support": "^5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
@@ -32,7 +32,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Triadev\\PrometheusExporter\\": "src/"
+            "GallopYD\\PrometheusExporter\\": "src/"
         }
     },
     "autoload-dev": {
@@ -43,7 +43,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Triadev\\PrometheusExporter\\Provider\\PrometheusExporterServiceProvider"
+                "GallopYD\\PrometheusExporter\\Provider\\PrometheusExporterServiceProvider"
             ]
         }
     },
@@ -61,4 +61,3 @@
         "fix-style": "phpcbf -p --standard=PSR2 src --ignore=src/Database/**,src/Config/*"
     }
 }
-

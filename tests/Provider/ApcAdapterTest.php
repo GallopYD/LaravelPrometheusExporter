@@ -3,7 +3,7 @@ namespace Tests\Provider;
 
 use Prometheus\Storage\Adapter;
 use Tests\TestCase;
-use Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
+use GallopYD\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
 
 class ApcAdapterTest extends TestCase
 {

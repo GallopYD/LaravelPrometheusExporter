@@ -35,7 +35,7 @@ The package is registered through the package discovery of laravel and Composer.
 
 Once installed you can now publish your config file and set your correct configuration for using the package.
 ```php
-php artisan vendor:publish --provider="Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider" --tag="config"
+php artisan vendor:publish --provider="GallopYD\PrometheusExporter\Provider\PrometheusExporterServiceProvider" --tag="config"
 ```
 
 This will create a file ```config/prometheus-exporter.php```.

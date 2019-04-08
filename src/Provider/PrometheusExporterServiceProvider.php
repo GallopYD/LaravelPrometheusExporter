@@ -1,15 +1,16 @@
 <?php
-namespace Triadev\PrometheusExporter\Provider;
+namespace GallopYD\PrometheusExporter\Provider;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Prometheus\Storage\InMemory;
-use Triadev\PrometheusExporter\Contract\PrometheusExporterContract;
+use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
 use Prometheus\Storage\Redis;
 use Prometheus\Storage\APC;
+use Prometheus\Storage\APCU;
 use Prometheus\Storage\Adapter;
-use Triadev\PrometheusExporter\Middleware\RequestPerRoute;
-use Triadev\PrometheusExporter\PrometheusExporter;
+use GallopYD\PrometheusExporter\Middleware\RequestPerRoute;
+use GallopYD\PrometheusExporter\PrometheusExporter;
 
 class PrometheusExporterServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,9 @@ class PrometheusExporterServiceProvider extends ServiceProvider
         switch (config('prometheus-exporter.adapter')) {
             case 'apc':
                 $this->app->bind(Adapter::class, APC::class);
+                break;
+            case 'apcu':
+                $this->app->bind(Adapter::class, APCU::class);
                 break;
             case 'redis':
                 $this->app->bind(Adapter::class, function () {

@@ -1,10 +1,10 @@
 <?php
-namespace Triadev\PrometheusExporter\Middleware;
+namespace GallopYD\PrometheusExporter\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Support\Facades\Route;
-use Triadev\PrometheusExporter\Contract\PrometheusExporterContract;
+use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
 
 class RequestPerRoute
 {

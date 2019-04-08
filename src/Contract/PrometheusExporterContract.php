@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\PrometheusExporter\Contract;
+namespace GallopYD\PrometheusExporter\Contract;
 
 use Prometheus\Exception\MetricsRegistrationException;
 use Prometheus\MetricFamilySamples;

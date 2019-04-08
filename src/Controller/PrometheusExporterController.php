@@ -1,10 +1,10 @@
 <?php
-namespace Triadev\PrometheusExporter\Controller;
+namespace GallopYD\PrometheusExporter\Controller;
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Prometheus\RenderTextFormat;
-use Triadev\PrometheusExporter\PrometheusExporter;
+use GallopYD\PrometheusExporter\PrometheusExporter;
 
 class PrometheusExporterController extends Controller
 {
