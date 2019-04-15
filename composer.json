@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "gallop-yd/prometheus_client_php": "^0.9.1",
+        "jimdo/prometheus_client_php": "^0.9.1",
         "illuminate/support": "^5.5"
     },
     "require-dev": {
