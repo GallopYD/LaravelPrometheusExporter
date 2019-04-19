@@ -64,7 +64,7 @@ This will create a file ```config/prometheus-exporter.php```.
 ## Usage
 
 ### Endpoint to get metrics
->triadev/pe/metrics
+>juhu/pe/metrics
 
 ### Middleware
 

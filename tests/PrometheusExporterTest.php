@@ -21,7 +21,7 @@ class PrometheusExporterTest extends TestCase
     
     private function getMetricResponse() : TestResponse
     {
-        return $this->get('/triadev/pe/metrics');
+        return $this->get('/juhu/pe/metrics');
     }
     
     private function getMetricValue(string $name) : ?int
