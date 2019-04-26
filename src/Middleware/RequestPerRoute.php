@@ -40,7 +40,7 @@ class RequestPerRoute
 
         $durationMilliseconds = (microtime(true) - $start) * 1000.0;
 
-        $labelKeys = config('prometheus_exporter.label_keys');
+        $labelKeys = config('prometheus-exporter.label_keys');
         $labelValues = $this->getLabelValue($request, $response, $labelKeys);
 
         $this->requestCountMetric($labelKeys, $labelValues);
@@ -108,7 +108,7 @@ class RequestPerRoute
         $this->prometheusExporter->incCounter(
             'requests_total',
             'the number of http requests',
-            config('prometheus_exporter.namespace_http'),
+            config('prometheus-exporter.namespace_http'),
             $labelKeys,
             $labelValues
         );
@@ -131,7 +131,7 @@ class RequestPerRoute
             'requests_latency_milliseconds',
             'duration of requests',
             $duration,
-            config('prometheus_exporter.namespace_http'),
+            config('prometheus-exporter.namespace_http'),
             $labelKeys,
             $labelValues,
             $bucketsPerRoute

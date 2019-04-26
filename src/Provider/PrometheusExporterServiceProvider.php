@@ -51,9 +51,6 @@ class PrometheusExporterServiceProvider extends ServiceProvider
             case 'apc':
                 $this->app->bind(Adapter::class, APC::class);
                 break;
-            case 'apcu':
-                $this->app->bind(Adapter::class, APCU::class);
-                break;
             case 'redis':
                 $this->app->bind(Adapter::class, function () {
                     return new Redis(config('prometheus-exporter.redis'));
