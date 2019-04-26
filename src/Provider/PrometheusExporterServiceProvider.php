@@ -1,13 +1,13 @@
 <?php
 namespace GallopYD\PrometheusExporter\Provider;
 
+use GallopYD\PrometheusExporter\Console\CacheClearCommand;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Prometheus\Storage\InMemory;
 use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
 use Prometheus\Storage\Redis;
 use Prometheus\Storage\APC;
-use Prometheus\Storage\APCU;
 use Prometheus\Storage\Adapter;
 use GallopYD\PrometheusExporter\Middleware\RequestPerRoute;
 use GallopYD\PrometheusExporter\PrometheusExporter;
@@ -71,6 +71,9 @@ class PrometheusExporterServiceProvider extends ServiceProvider
             $router = $this->app['router'];
             $router->aliasMiddleware('lpe.requestPerRoute', RequestPerRoute::class);
         }
+
+        //Register commands
+        $this->commands([CacheClearCommand::class]);
     
         $this->app->bind(PrometheusExporterContract::class, PrometheusExporter::class, true);
     }

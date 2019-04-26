@@ -2,7 +2,7 @@
 
 namespace GallopYD\PrometheusExporter\Middleware;
 
-use GallopYD\DeviceUtil\DeviceUtil;
+use GallopYD\PrometheusExporter\DeviceUtil;
 use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Support\Facades\Route;

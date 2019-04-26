@@ -1,6 +1,6 @@
 <?php
 
-namespace GallopYD\DeviceUtil;
+namespace GallopYD\PrometheusExporter;
 
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Device\DeviceParserAbstract;
