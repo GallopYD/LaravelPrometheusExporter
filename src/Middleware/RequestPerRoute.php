@@ -48,7 +48,6 @@ class RequestPerRoute
     private function recordRequest($request, $response, $start)
     {
         $durationMilliseconds = (microtime(true) - $start) * 1000.0;
-
         $labelKeys = config('prometheus-exporter.label_keys');
         $labelValues = $this->getLabelValue($request, $response, $labelKeys);
 
@@ -79,12 +78,9 @@ class RequestPerRoute
         if ($user_watchers && $status_code == 200) {
             foreach ($user_watchers as $key => $value) {
                 if (isset($value[$request_uri]) && ($value[$request_uri] == $method || $value[$request_uri] == 'ANY')) {
-                    $data = [
-                        'user_id' => $this->getUserId($response),
-                        'ip' => CommonUtil::getIp()
-                    ];
-                    $labelKeys = array_keys($data);
-                    $labelValues = array_values($data);
+                    $labelKeys = ['user_id', 'ip'];
+                    $labelValues = $this->getLabelValue($request, $response, $labelKeys);
+
                     $this->prometheusExporter->incCounter(
                         "{$key}_total",
                         "the number of {$key}",
@@ -138,6 +134,14 @@ class RequestPerRoute
                     $version = $detector->getOs('version');
                     array_push($labelValues, $version);
                     break;
+                case 'ip':
+                    $ip = CommonUtil::getIp();
+                    array_push($labelValues, $ip);
+                    break;
+                case 'user_id':
+                    $user_id = $this->getUserId($response);
+                    array_push($labelValues, $user_id);
+                    break;
                 default:
                     array_push($labelValues, $request->$labelKey);
                     break;
@@ -162,45 +166,5 @@ class RequestPerRoute
             $user_id = null;
         }
         return $user_id;
-    }
-
-    /**
-     * @param array $labelKeys
-     * @param array $labelValues
-     * @throws \Prometheus\Exception\MetricsRegistrationException
-     */
-    private function requestCountMetric(array $labelKeys, array $labelValues)
-    {
-        $this->prometheusExporter->incCounter(
-            'requests_total',
-            'the number of http requests',
-            config('prometheus-exporter.namespace_http'),
-            $labelKeys,
-            $labelValues
-        );
-    }
-
-    /**
-     * @param array $labelKeys
-     * @param array $labelValues
-     * @throws \Prometheus\Exception\MetricsRegistrationException
-     */
-    private function requestLatencyMetric(array $labelKeys, array $labelValues, int $duration)
-    {
-        $bucketsPerRoute = null;
-
-//        if ($bucketsPerRouteConfig = config('prometheus-exporter.buckets_per_route')) {
-//            $bucketsPerRoute = array_get($bucketsPerRouteConfig, $requestUri);
-//        }
-
-        $this->prometheusExporter->setHistogram(
-            'requests_latency_milliseconds',
-            'duration of requests',
-            $duration,
-            config('prometheus-exporter.namespace_http'),
-            $labelKeys,
-            $labelValues,
-            $bucketsPerRoute
-        );
     }
 }

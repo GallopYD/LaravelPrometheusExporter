@@ -27,7 +27,8 @@ return [
         'method',
         'status_code',
         'client',
-        'version'
+        'version',
+        'ip'
     ],
 
     //事件监听
