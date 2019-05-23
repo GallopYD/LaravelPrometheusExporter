@@ -29,4 +29,27 @@ return [
         'client',
         'version'
     ],
+
+    //事件监听
+    'event_watchers' => [
+        \GallopYD\PrometheusExporter\Watchers\JobWatcher::class => true,
+    ],
+
+    //用户操作监听
+    'user_watchers' => [
+        'login' => [
+            // url => method ( GET / POST / PUT / DELETE / ANY )
+//            'api/login' => 'POST'
+        ],
+        'register' => [
+
+        ],
+        'order' => [
+
+        ],
+        'recharge' => [
+
+        ]
+    ]
+
 ];

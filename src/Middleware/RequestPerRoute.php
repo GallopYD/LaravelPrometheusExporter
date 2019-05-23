@@ -2,11 +2,12 @@
 
 namespace GallopYD\PrometheusExporter\Middleware;
 
-use GallopYD\PrometheusExporter\DeviceUtil;
+use GallopYD\PrometheusExporter\Utils\CommonUtil;
+use GallopYD\PrometheusExporter\Utils\DeviceUtil;
 use Illuminate\Http\Request;
 use Closure;
-use Illuminate\Support\Facades\Route;
 use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RequestPerRoute
 {
@@ -38,15 +39,63 @@ class RequestPerRoute
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
+        $this->recordRequest($request, $response, $start);
+        $this->recordUserData($request, $response);
+
+        return $response;
+    }
+
+    private function recordRequest($request, $response, $start)
+    {
         $durationMilliseconds = (microtime(true) - $start) * 1000.0;
 
         $labelKeys = config('prometheus-exporter.label_keys');
         $labelValues = $this->getLabelValue($request, $response, $labelKeys);
 
-        $this->requestCountMetric($labelKeys, $labelValues);
-        $this->requestLatencyMetric($labelKeys, $labelValues, $durationMilliseconds);
+        $this->prometheusExporter->incCounter(
+            'requests_total',
+            'the number of http requests',
+            config('prometheus-exporter.namespace_http'),
+            $labelKeys,
+            $labelValues
+        );
+        $this->prometheusExporter->setHistogram(
+            'requests_latency_milliseconds',
+            'duration of requests',
+            $durationMilliseconds,
+            config('prometheus-exporter.namespace_http'),
+            $labelKeys,
+            $labelValues,
+            null
+        );
+    }
 
-        return $response;
+    private function recordUserData($request, $response)
+    {
+        $request_uri = $request->route()->uri();
+        $method = $request->getMethod();
+        $status_code = $response->getStatusCode();
+        $user_watchers = config('prometheus-exporter.user_watchers');
+        if ($user_watchers && $status_code == 200) {
+            foreach ($user_watchers as $key => $value) {
+                if (isset($value[$request_uri]) && ($value[$request_uri] == $method || $value[$request_uri] == 'ANY')) {
+                    $data = [
+                        'user_id' => $this->getUserId($response),
+                        'ip' => CommonUtil::getIp()
+                    ];
+                    $labelKeys = array_keys($data);
+                    $labelValues = array_values($data);
+                    $this->prometheusExporter->incCounter(
+                        "{$key}_total",
+                        "the number of {$key}",
+                        config('prometheus-exporter.namespace'),
+                        $labelKeys,
+                        $labelValues
+                    );
+                }
+            }
+
+        }
     }
 
     /**
@@ -74,8 +123,8 @@ class RequestPerRoute
                     array_push($labelValues, $method);
                     break;
                 case 'status_code':
-                    $status = $response->getStatusCode();
-                    array_push($labelValues, $status);
+                    $status_code = $response->getStatusCode();
+                    array_push($labelValues, $status_code);
                     break;
                 case 'client':
                     $user_agent = $request->server('HTTP_USER_AGENT');
@@ -96,6 +145,23 @@ class RequestPerRoute
             }
         }
         return $labelValues;
+    }
+
+    private function getUserId($response)
+    {
+        try {
+            $data = json_decode($response->getContent(), true);
+            if (isset($data['data']['token'])) {
+                $token = $data['data']['token'];
+            } else {
+                $token = JWTAuth::getToken();
+            }
+            $user = JWTAuth::toUser($token);
+            $user_id = $user->id;
+        } catch (\Exception $exception) {
+            $user_id = null;
+        }
+        return $user_id;
     }
 
     /**
