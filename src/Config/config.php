@@ -33,7 +33,7 @@ return [
 
     //事件监听
     'event_watchers' => [
-        \GallopYD\PrometheusExporter\Watchers\JobWatcher::class => true,
+//        \GallopYD\PrometheusExporter\Watchers\JobWatcher::class => false,
     ],
 
     //用户操作监听
