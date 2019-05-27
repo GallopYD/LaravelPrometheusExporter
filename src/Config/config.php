@@ -31,11 +31,6 @@ return [
         'ip'
     ],
 
-    //事件监听
-    'event_watchers' => [
-//        \GallopYD\PrometheusExporter\Watchers\JobWatcher::class => false,
-    ],
-
     //用户操作监听
     'user_watchers' => [
         'login' => [
