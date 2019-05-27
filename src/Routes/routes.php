@@ -1,6 +1,11 @@
 <?php
 
 Route::get(
-    'juhu/pe/metrics',
-    \GallopYD\PrometheusExporter\Controller\PrometheusExporterController::class . '@metrics'
-)->name('juhu.pe.metrics');
+    'prometheus/metrics',
+    \GallopYD\PrometheusExporter\Controller\PrometheusExporterController::class . '@index'
+);
+
+Route::post(
+    'prometheus/metrics',
+    \GallopYD\PrometheusExporter\Controller\PrometheusExporterController::class . '@store'
+);
