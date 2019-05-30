@@ -60,7 +60,7 @@ class PrometheusExporterController extends Controller
             'buckets' => $request->get('buckets', null),
         ];
         Validator::make($data, [
-            'metric' => 'required|string|in:histogram,counter',
+            'metric' => 'required|string|in:histogram,counter,gauge',
             'name' => 'required|string',
             'help' => 'required|string',
             'namespace' => 'required|string',
@@ -69,6 +69,24 @@ class PrometheusExporterController extends Controller
         ]);
 
         switch ($data['metric']) {
+            case 'counter':
+                $this->prometheusExporter->incCounter(
+                    $data['name'],
+                    $data['help'],
+                    $data['namespace'],
+                    $data['label_keys'],
+                    $data['label_values']
+                );
+                break;
+            case 'gauge':
+                $this->prometheusExporter->incGauge(
+                    $data['name'],
+                    $data['help'],
+                    $data['namespace'],
+                    $data['label_keys'],
+                    $data['label_values']
+                );
+                break;
             case 'histogram':
                 $this->prometheusExporter->setHistogram(
                     $data['name'],
@@ -80,15 +98,7 @@ class PrometheusExporterController extends Controller
                     $data['buckets']
                 );
                 break;
-            case 'counter':
-                $this->prometheusExporter->incCounter(
-                    $data['name'],
-                    $data['help'],
-                    $data['namespace'],
-                    $data['label_keys'],
-                    $data['label_values']
-                );
-                break;
+
         }
         return response()->json([
             'message' => 'success'
