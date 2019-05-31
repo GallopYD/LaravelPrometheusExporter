@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    'enable' => env('PROMETHEUS_ENABLE', true),
+
     'adapter' => env('PROMETHEUS_ADAPTER', 'apc'),
 
     'namespace' => 'app',
@@ -19,7 +22,7 @@ return [
         'address' => env('PROMETHEUS_PUSH_GATEWAY_ADDRESS', 'localhost:9091')
     ],
 
-    'buckets_per_route' => [],
+    'buckets_per_route' => null,
 
     //http请求标签KEY
     'http_label_keys' => [

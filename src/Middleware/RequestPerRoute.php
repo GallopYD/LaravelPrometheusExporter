@@ -34,13 +34,16 @@ class RequestPerRoute
      */
     public function handle(Request $request, Closure $next)
     {
+        $enable = config('prometheus-exporter.enable');
         $start = microtime(true);
 
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
-        $this->recordRequest($request, $response, $start);
-        $this->recordUserData($request, $response);
+        if($enable){
+            $this->recordRequest($request, $response, $start);
+            $this->recordUserData($request, $response);
+        }
 
         return $response;
     }
