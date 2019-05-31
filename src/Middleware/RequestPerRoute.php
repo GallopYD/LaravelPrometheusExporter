@@ -47,8 +47,9 @@ class RequestPerRoute
 
     private function recordRequest($request, $response, $start)
     {
+        $buckets = config('prometheus-exporter.buckets_per_route');
         $durationMilliseconds = (microtime(true) - $start) * 1000.0;
-        $labelKeys = config('prometheus-exporter.label_keys');
+        $labelKeys = config('prometheus-exporter.http_label_keys');
         $labelValues = $this->getLabelValue($request, $response, $labelKeys);
 
         $this->prometheusExporter->incCounter(
@@ -65,7 +66,7 @@ class RequestPerRoute
             config('prometheus-exporter.namespace_http'),
             $labelKeys,
             $labelValues,
-            null
+            $buckets
         );
     }
 
@@ -78,7 +79,7 @@ class RequestPerRoute
         if ($user_watchers && $status_code == 200) {
             foreach ($user_watchers as $key => $value) {
                 if (isset($value[$request_uri]) && ($value[$request_uri] == $method || $value[$request_uri] == 'ANY')) {
-                    $labelKeys = ['user_id', 'ip'];
+                    $labelKeys = config('prometheus-exporter.user_label_keys');
                     $labelValues = $this->getLabelValue($request, $response, $labelKeys);
 
                     $this->prometheusExporter->incCounter(

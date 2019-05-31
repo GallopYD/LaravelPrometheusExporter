@@ -21,14 +21,22 @@ return [
 
     'buckets_per_route' => [],
 
-    'label_keys' => [
+    //http请求标签KEY
+    'http_label_keys' => [
         'app_name',
         'request_uri',
         'method',
         'status_code',
         'client',
         'version',
-        'ip'
+//        'ip'
+    ],
+
+    //用户操作标签KEY
+    'user_label_keys' => [
+        'app_name',
+        'user_id',
+//        'ip'
     ],
 
     //用户操作监听
