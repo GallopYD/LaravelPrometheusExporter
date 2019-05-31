@@ -156,7 +156,7 @@ class RequestPerRoute
         try {
             $data = json_decode($response->getContent(), true);
             if (isset($data['data']['token'])) {
-                $token = $data['data']['token'];
+                $token = str_replace('Bearer ', '', $data['data']['token']);
             } else {
                 $token = JWTAuth::getToken();
             }
