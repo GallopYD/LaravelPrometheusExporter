@@ -8,7 +8,7 @@ return [
 
     'namespace' => 'app',
 
-    'namespace_http' => 'http',
+    'namespace_http' => 'api',
 
     'redis' => [
         'host' => env('PROMETHEUS_REDIS_HOST', '127.0.0.1'),
