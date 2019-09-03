@@ -54,6 +54,9 @@ class RequestPerRoute
         $durationMilliseconds = (microtime(true) - $start) * 1000.0;
         $labelKeys = config('prometheus-exporter.http_label_keys');
         $labelValues = $this->getLabelValue($request, $response, $labelKeys);
+        array_walk($labelKeys, function (&$item) {
+            $item = strtolower(str_replace("-", "_", $item));
+        });
 
         $this->prometheusExporter->incCounter(
             'requests_total',
@@ -84,7 +87,9 @@ class RequestPerRoute
                 if (isset($value[$request_uri]) && ($value[$request_uri] == $method || $value[$request_uri] == 'ANY')) {
                     $labelKeys = config('prometheus-exporter.user_label_keys');
                     $labelValues = $this->getLabelValue($request, $response, $labelKeys);
-
+                    array_walk($labelKeys, function (&$item) {
+                        $item = strtolower(str_replace("-", "_", $item));
+                    });
                     $this->prometheusExporter->incCounter(
                         "{$key}_total",
                         "the number of {$key}",
