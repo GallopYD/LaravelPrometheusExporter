@@ -40,7 +40,7 @@ class RequestPerRoute
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
-        if($enable){
+        if ($enable) {
             $this->recordRequest($request, $response, $start);
             $this->recordUserData($request, $response);
         }
@@ -147,7 +147,7 @@ class RequestPerRoute
                     array_push($labelValues, $user_id);
                     break;
                 default:
-                    array_push($labelValues, $request->$labelKey);
+                    array_push($labelValues, $request->header($labelKey));
                     break;
 
             }

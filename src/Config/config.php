@@ -30,8 +30,8 @@ return [
         'request_uri',
         'method',
         'status_code',
-        'client',
-        'version',
+        'Client-Name',
+        'Client-Version',
 //        'ip'
     ],
 
