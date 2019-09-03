@@ -7,6 +7,7 @@ use GallopYD\PrometheusExporter\Utils\DeviceUtil;
 use Illuminate\Http\Request;
 use Closure;
 use GallopYD\PrometheusExporter\Contract\PrometheusExporterContract;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RequestPerRoute
@@ -41,8 +42,12 @@ class RequestPerRoute
         $response = $next($request);
 
         if ($enable) {
-            $this->recordRequest($request, $response, $start);
-            $this->recordUserData($request, $response);
+            try {
+                $this->recordRequest($request, $response, $start);
+                $this->recordUserData($request, $response);
+            } catch (\Exception $exception) {
+                Log::error("prometheus exporter error:" . $exception->getMessage());
+            }
         }
 
         return $response;
